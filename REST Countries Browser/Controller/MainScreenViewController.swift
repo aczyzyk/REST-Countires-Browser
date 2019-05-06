@@ -11,6 +11,8 @@ import Alamofire
 import SwiftyJSON
 
 var countries = [Country]()
+let searchController = UISearchController(searchResultsController: nil)
+var filteredCountries = [Country]()
 
 class MainScreenViewController: UIViewController {
     
@@ -22,6 +24,13 @@ class MainScreenViewController: UIViewController {
         
         countriesTableView.delegate = self
         countriesTableView.dataSource = self
+        
+        // Setup the Search Controller
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search countries"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
         
         updateCountriesArray()
     }
@@ -51,22 +60,60 @@ class MainScreenViewController: UIViewController {
 }
 
 
-//MARK: - Table View methods
+//MARK: - Table View
 
 extension MainScreenViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return countries.count
+        if isFiltering() {
+            return filteredCountries.count
+        } else {
+            return countries.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "countryCell") as! CountryCell
-        cell.setCountry(countries[indexPath.row])
+        let country : Country
+        
+        #warning("Replace with ternary operator")
+        if isFiltering() {
+            country = filteredCountries[indexPath.row]
+        } else {
+            country = countries[indexPath.row]
+        }
+        
+        cell.setCountry(country)
         return cell
     }
     
+}
+
+
+//MARK: - Search bar
+
+extension MainScreenViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
     
+    // MARK: - Private instance methods
     
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
     
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredCountries = countries.filter({( country : Country) -> Bool in
+            return country.name.lowercased().contains(searchText.lowercased())
+        })
+        
+        countriesTableView.reloadData()
+    }
     
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
 }

@@ -13,18 +13,34 @@ import SwiftyJSON
 var countries = [Country]()
 
 class HomeViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    }
-
-
-    func updateListOfCountries() {
-        let sourceDataBaseURL = "https://restcountries.eu/rest/v2/all"
-        let filteredDataURL = "\(sourceDataBaseURL)?fields=name;nativeName"
-        
+        updateCountriesArray()
         
     }
+    
+    
+    fileprivate func updateCountriesArray() {
+        
+        let filteredDataURL = "https://restcountries.eu/rest/v2/all?fields=name;nativeName"
+        
+        Alamofire.request(filteredDataURL, method: .get).responseJSON {
+            response in
+            
+            if response.result.isSuccess {
+                
+                let countriesAsJSONs = JSON(response.result.value).arrayValue
+                
+                countries = countriesAsJSONs.map { Country(name: JSON($0)["name"].stringValue, nativeName: JSON($0)["nativeName"].stringValue)}
+           
+            } else {
+                #warning("Let user know that update failed")
+            }
+        }
+        
+    }
+    
 }
 

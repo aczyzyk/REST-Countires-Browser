@@ -11,6 +11,7 @@ import Alamofire
 import SwiftyJSON
 
 var countries = [Country]()
+
 let searchController = UISearchController(searchResultsController: nil)
 var filteredCountries = [Country]()
 
@@ -25,20 +26,15 @@ class MainScreenViewController: UIViewController {
         countriesTableView.delegate = self
         countriesTableView.dataSource = self
         
-        // Setup the Search Controller
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search countries"
-        navigationItem.searchController = searchController
-        definesPresentationContext = true
-        
+        setUpSearchController()
+
         updateCountriesArray()
     }
     
     
     fileprivate func updateCountriesArray() {
         
-        let filteredDataURL = "https://restcountries.eu/rest/v2/all?fields=name;nativeName"
+        let filteredDataURL = "https://restcountries.eu/rest/v2/all?fields=name;nativeName;flag;alpha2Code"
         
         Alamofire.request(filteredDataURL, method: .get).responseJSON {
             response in
@@ -47,7 +43,7 @@ class MainScreenViewController: UIViewController {
                 
                 let countriesAsJSONs = JSON(response.result.value).arrayValue
                 
-                countries = countriesAsJSONs.map { Country(name: JSON($0)["name"].stringValue, nativeName: JSON($0)["nativeName"].stringValue)}
+                countries = countriesAsJSONs.map { Country(name: JSON($0)["name"].stringValue, nativeName: JSON($0)["nativeName"].stringValue, flagURL: JSON($0)["flag"].stringValue, alpha2Code: JSON($0)["alpha2Code"].stringValue)}
                 self.countriesTableView.reloadData()
                 
             } else {
@@ -65,40 +61,34 @@ class MainScreenViewController: UIViewController {
 extension MainScreenViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if isFiltering() {
-            return filteredCountries.count
-        } else {
-            return countries.count
-        }
+        return isFiltering() ? filteredCountries.count : countries.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "countryCell") as! CountryCell
-        let country : Country
-        
-        #warning("Replace with ternary operator")
-        if isFiltering() {
-            country = filteredCountries[indexPath.row]
-        } else {
-            country = countries[indexPath.row]
-        }
-        
+        let country = isFiltering() ? filteredCountries[indexPath.row] : countries[indexPath.row]
         cell.setCountry(country)
         return cell
     }
-    
+
 }
 
 
 //MARK: - Search bar
 
 extension MainScreenViewController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
+
+    func setUpSearchController() {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search countries"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
+    }
+    
     func updateSearchResults(for searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
     }
-    
-    // MARK: - Private instance methods
     
     func searchBarIsEmpty() -> Bool {
         // Returns true if the text is empty or nil
@@ -107,7 +97,7 @@ extension MainScreenViewController: UISearchResultsUpdating {
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
         filteredCountries = countries.filter({( country : Country) -> Bool in
-            return country.name.lowercased().contains(searchText.lowercased())
+            return country.name.lowercased().contains(searchText.lowercased()) || country.nativeName.lowercased().contains(searchText.lowercased())
         })
         
         countriesTableView.reloadData()
@@ -116,4 +106,24 @@ extension MainScreenViewController: UISearchResultsUpdating {
     func isFiltering() -> Bool {
         return searchController.isActive && !searchBarIsEmpty()
     }
+}
+
+
+//MARK: - Segues
+
+extension MainScreenViewController {
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "MainToDetails" {
+            if let destination = segue.destination as? DetailsScreenViewController,
+                let index = countriesTableView.indexPathsForSelectedRows?.first {
+                destination.selectedCountry = isFiltering() ? filteredCountries[index.row] : countries[index.row]
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "MainToDetails", sender: self)
+    }
+    
 }

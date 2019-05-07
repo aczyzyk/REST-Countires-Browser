@@ -11,4 +11,6 @@ import Foundation
 struct Country {
     let name : String
     let nativeName : String
+    let flagURL : String
+    let alpha2Code : String
 }

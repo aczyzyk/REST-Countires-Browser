@@ -25,14 +25,20 @@ class DetailsScreenViewController: UIViewController {
     
     var selectedCountry : Country?
     var countryDetails : CountryDetails?
+    var simpleArray = [(String, String)]()
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       if let selectedCountry = selectedCountry {
-        displayBasicCountryInfo(for: selectedCountry)
-        updateCountryDetails(for: selectedCountry)
+        detailsTableView.delegate = self
+        detailsTableView.dataSource = self
+        
+        if let selectedCountry = selectedCountry {
+            displayBasicCountryInfo(for: selectedCountry)
+            updateCountryDetails(for: selectedCountry)
+            
         }
     }
     
@@ -55,6 +61,10 @@ class DetailsScreenViewController: UIViewController {
                 
                 self.countryDetails = CountryDetails(countryDetailsJSON: JSON(response.result.value))
                 self.zoomInMap()
+                if let countryDetails = self.countryDetails {
+                    self.simpleArray = countryDetails.asSimpleArray()
+                    self.detailsTableView.reloadData()
+                }
 
             } else {
                 self.countryDetails = nil
@@ -102,5 +112,22 @@ extension DetailsScreenViewController {
         }
         
     }
+    
+}
+
+
+//MARK: - Details Table View
+
+extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return simpleArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "detailsCell") as! DetailsTableViewCell
+        cell.setDetail(simpleArray[indexPath.row])
+        return cell
+    }
+    
     
 }

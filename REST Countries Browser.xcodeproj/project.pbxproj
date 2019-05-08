@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		40161B7A2282B26800473100 /* CountryDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40161B792282B26800473100 /* CountryDetails.swift */; };
 		404D58092281600C00B17E2A /* DetailsScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404D58082281600C00B17E2A /* DetailsScreenViewController.swift */; };
 		4065410D228034CD00953E27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4065410C228034CD00953E27 /* AppDelegate.swift */; };
 		4065410F228034CD00953E27 /* MainScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4065410E228034CD00953E27 /* MainScreenViewController.swift */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		0A2B019A0CE5B1CF65D5905A /* Pods-REST Countries BrowserTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-REST Countries BrowserTests.debug.xcconfig"; path = "Target Support Files/Pods-REST Countries BrowserTests/Pods-REST Countries BrowserTests.debug.xcconfig"; sourceTree = "<group>"; };
+		40161B792282B26800473100 /* CountryDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryDetails.swift; sourceTree = "<group>"; };
 		404D58082281600C00B17E2A /* DetailsScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsScreenViewController.swift; sourceTree = "<group>"; };
 		40654109228034CD00953E27 /* REST Countries Browser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "REST Countries Browser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4065410C228034CD00953E27 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				40F254A92280362C00003328 /* Country.swift */,
+				40161B792282B26800473100 /* CountryDetails.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -345,6 +348,7 @@
 				404D58092281600C00B17E2A /* DetailsScreenViewController.swift in Sources */,
 				40F254AA2280362C00003328 /* Country.swift in Sources */,
 				4065410D228034CD00953E27 /* AppDelegate.swift in Sources */,
+				40161B7A2282B26800473100 /* CountryDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

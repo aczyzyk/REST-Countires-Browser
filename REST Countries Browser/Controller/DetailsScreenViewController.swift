@@ -24,7 +24,7 @@ class DetailsScreenViewController: UIViewController {
     @IBOutlet weak var detailsTableView: UITableView!
     
     var selectedCountry : Country?
-    var countryDetails : JSON?
+    var countryDetails : CountryDetails?
     
     
     override func viewDidLoad() {
@@ -32,7 +32,7 @@ class DetailsScreenViewController: UIViewController {
         
        if let selectedCountry = selectedCountry {
         displayBasicCountryInfo(for: selectedCountry)
-        getCountryDetails(for: selectedCountry)
+        updateCountryDetails(for: selectedCountry)
         }
     }
     
@@ -44,7 +44,7 @@ class DetailsScreenViewController: UIViewController {
     }
     
     
-    fileprivate func getCountryDetails(for country: Country) {
+    fileprivate func updateCountryDetails(for country: Country) {
         
         let dataRequestURL = "https://restcountries.eu/rest/v2/alpha/\(country.alpha2Code)"
         
@@ -53,8 +53,9 @@ class DetailsScreenViewController: UIViewController {
             
             if response.result.isSuccess {
                 
-                self.countryDetails = JSON(response.result.value)
+                self.countryDetails = CountryDetails(countryDetailsJSON: JSON(response.result.value))
                 self.zoomInMap()
+
             } else {
                 self.countryDetails = nil
                 #warning("Let user know that request failed")
@@ -83,19 +84,23 @@ extension DetailsScreenViewController {
 }
 
 
-//MARK: Map
+//MARK: - Map
 
 extension DetailsScreenViewController {
     
     func zoomInMap() {
-        let coordinates : (Double, Double) = (JSON(countryDetails)["latlng"][0].doubleValue, JSON(countryDetails)["latlng"][1].doubleValue)
-
-        let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates.0, longitude: coordinates.1), span: MKCoordinateSpan(latitudeDelta: 5, longitudeDelta: 5))
         
-        DispatchQueue.main.async {
-            self.mapView.setRegion(region, animated: true)
+        if let countryDetails = countryDetails {
+            
+            let coordinates = countryDetails.latlng
+            let estimatedCountrySpan = Double(countryDetails.area).squareRoot() / 100
+            let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates.0, longitude: coordinates.1), span: MKCoordinateSpan(latitudeDelta: estimatedCountrySpan, longitudeDelta: estimatedCountrySpan))
+            
+            DispatchQueue.main.async {
+                self.mapView.setRegion(region, animated: true)
+            }
         }
         
-        }
+    }
     
 }

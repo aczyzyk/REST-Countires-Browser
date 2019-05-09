@@ -15,7 +15,8 @@ var countries = [Country]()
 let searchController = UISearchController(searchResultsController: nil)
 var filteredCountries = [Country]()
 
-class MainScreenViewController: UIViewController {
+
+class MainScreenViewController: CustomViewController {
     
     @IBOutlet weak var countriesTableView: UITableView!
     
@@ -30,8 +31,7 @@ class MainScreenViewController: UIViewController {
 
         updateCountriesArray()
     }
-    
-    
+        
     fileprivate func updateCountriesArray() {
         
         let filteredDataURL = "https://restcountries.eu/rest/v2/all?fields=name;nativeName;flag;alpha2Code"
@@ -47,7 +47,7 @@ class MainScreenViewController: UIViewController {
                 self.countriesTableView.reloadData()
                 
             } else {
-                #warning("Let user know that update failed")
+                self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list to retry.")
             }
         }
         

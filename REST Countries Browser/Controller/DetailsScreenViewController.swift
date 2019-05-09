@@ -15,7 +15,7 @@ import SDWebImage
 import SDWebImageSVGCoder
 
 
-class DetailsScreenViewController: UIViewController {
+class DetailsScreenViewController: CustomViewController {
 
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nativeNameLabel: UILabel!
@@ -68,7 +68,7 @@ class DetailsScreenViewController: UIViewController {
 
             } else {
                 self.countryDetails = nil
-                #warning("Let user know that request failed")
+                self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list to retry.")
             }
         }
         
@@ -88,7 +88,8 @@ extension DetailsScreenViewController {
         let SVGCoder = SDImageSVGCoder.shared
         SDImageCodersManager.shared.addCoder(SVGCoder)
         
-        flagImageView.sd_setImage(with: url)
+        let SVGImageSize = CGSize(width: 120, height: 60)
+        flagImageView.sd_setImage(with: url, placeholderImage: nil, options: [], context: [.svgImageSize : SVGImageSize])
     }
     
 }
@@ -103,7 +104,7 @@ extension DetailsScreenViewController {
         if let countryDetails = countryDetails {
             
             let coordinates = countryDetails.latlng
-            let estimatedCountrySpan = Double(countryDetails.area).squareRoot() / 100
+            let estimatedCountrySpan = Double(countryDetails.area).squareRoot() / 100 * 1.3
             let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates.0, longitude: coordinates.1), span: MKCoordinateSpan(latitudeDelta: estimatedCountrySpan, longitudeDelta: estimatedCountrySpan))
             
             DispatchQueue.main.async {

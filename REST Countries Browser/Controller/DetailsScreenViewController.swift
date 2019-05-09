@@ -45,10 +45,9 @@ class DetailsScreenViewController: CustomViewController {
         //Define sections for details table view
         sections = [
             Section(title: "Names", items: [Item.name, Item.nativeName, Item.altSpellings, Item.translations, Item.demonym]),
-            Section(title: "General Info", items: [Item.capital, Item.region, Item.subregion, Item.area, Item.population, Item.gini, Item.latlng, Item.borders]),
+            Section(title: "General Info", items: [Item.capital, Item.region, Item.subregion, Item.area, Item.population, Item.gini, Item.latlng, Item.borders, Item.timezones]),
             Section(title: "Languages", items: [Item.languages]),
             Section(title: "Currencies", items: [Item.currencies]),
-            Section(title: "Time zones", items: [Item.timezones]),
             Section(title: "Regional Blocs", items: [Item.regionalBlocs]),
             Section(title: "Codes", items: [Item.alpha2Code, Item.alpha3Code, Item.callingCodes, Item.topLevelDomain, Item.numericCode,Item.cioc])
         ]
@@ -186,7 +185,7 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
                 cell.setDetail(("Subregion", countryDetails.subregion))
                 
             case .population:
-                cell.setDetail(("Population", String(countryDetails.population)))
+                cell.setDetail(("Population", countryDetails.population.asStringWithSeparator))
                 
             case .latlng:
                 cell.setDetail(("Coordinates", "(\(countryDetails.latlng.0), \(countryDetails.latlng.1))"))
@@ -195,13 +194,13 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
                 cell.setDetail(("Demonym", countryDetails.demonym))
                 
             case .area:
-                cell.setDetail(("Area", String(countryDetails.area)))
+                cell.setDetail(("Area", countryDetails.area.asStringWithSeparator))
                 
             case .gini:
                 cell.setDetail(("GINI", String(countryDetails.gini)))
                 
             case .timezones:
-                cell.setDetail(("", countryDetails.timezones.joined(separator: "\n")))
+                cell.setDetail(("Time Zones", countryDetails.timezones.joined(separator: "\n")))
                 
             case .borders:
                 cell.setDetail(("Borders", countryDetails.borders.joined(separator: "\n")))
@@ -237,9 +236,10 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
             case .regionalBlocs:
                 var value = ""
                 for bloc in countryDetails.regionalBlocs {
-                    value += "\(bloc.name)\n"
-                    value += "\(bloc.acronym)\n"
+                    value += "\(bloc.name) (\(bloc.acronym))\n"
+                    if !bloc.otherNames.isEmpty { value += "Other names:\n" }
                     value += bloc.otherNames.joined(separator: "\n")
+                    if !bloc.otherAcronyms.isEmpty { value += "Other acronyms:\n" }
                     value += bloc.otherAcronyms.joined(separator: "\n")
                     value += "\n"
                 }

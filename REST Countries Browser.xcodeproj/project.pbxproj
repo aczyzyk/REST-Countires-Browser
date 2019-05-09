@@ -18,6 +18,7 @@
 		40B99CAF2284599A0086AD85 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B99CAE2284599A0086AD85 /* Extensions.swift */; };
 		40D1B08322830DF40059D985 /* DetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D1B08222830DF40059D985 /* DetailsTableViewCell.swift */; };
 		40D521EF228077B600AD18CE /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D521EE228077B600AD18CE /* CountryCell.swift */; };
+		40D5A28F22846C4F0006C955 /* Readme in Resources */ = {isa = PBXBuildFile; fileRef = 40D5A28E22846C4F0006C955 /* Readme */; };
 		40F254AA2280362C00003328 /* CountryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F254A92280362C00003328 /* CountryHeader.swift */; };
 		7E2DDAF73405D29B867F9FA1 /* Pods_REST_Countries_Browser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A3B01FEEEEE3469DAE1977E /* Pods_REST_Countries_Browser.framework */; };
 		89CD8A0C9067FC6201845B52 /* Pods_REST_Countries_BrowserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7333A7F2B0DF78457F72A375 /* Pods_REST_Countries_BrowserTests.framework */; };
@@ -50,6 +51,7 @@
 		40B99CAE2284599A0086AD85 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		40D1B08222830DF40059D985 /* DetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableViewCell.swift; sourceTree = "<group>"; };
 		40D521EE228077B600AD18CE /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
+		40D5A28E22846C4F0006C955 /* Readme */ = {isa = PBXFileReference; lastKnownFileType = text; path = Readme; sourceTree = "<group>"; };
 		40F254A92280362C00003328 /* CountryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryHeader.swift; sourceTree = "<group>"; };
 		6A3B01FEEEEE3469DAE1977E /* Pods_REST_Countries_Browser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_REST_Countries_Browser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7333A7F2B0DF78457F72A375 /* Pods_REST_Countries_BrowserTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_REST_Countries_BrowserTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +119,7 @@
 				40B99CAE2284599A0086AD85 /* Extensions.swift */,
 				40654113228034CE00953E27 /* Assets.xcassets */,
 				40654118228034CE00953E27 /* Info.plist */,
+				40D5A28E22846C4F0006C955 /* Readme */,
 			);
 			path = "REST Countries Browser";
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				40654114228034CE00953E27 /* Assets.xcassets in Resources */,
+				40D5A28F22846C4F0006C955 /* Readme in Resources */,
 				40654112228034CD00953E27 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

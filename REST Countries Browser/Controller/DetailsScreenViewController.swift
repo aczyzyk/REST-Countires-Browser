@@ -103,7 +103,7 @@ extension DetailsScreenViewController {
         let SVGCoder = SDImageSVGCoder.shared
         SDImageCodersManager.shared.addCoder(SVGCoder)
         
-        let SVGImageSize = CGSize(width: 120, height: 60)
+        let SVGImageSize = CGSize(width: 60, height: 40)
         flagImageView.sd_setImage(with: url, placeholderImage: nil, options: [], context: [.svgImageSize : SVGImageSize])
     }
     

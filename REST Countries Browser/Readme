@@ -1,0 +1,16 @@
+
+TO DO:
+- improve parsing and display od data for (one per row):
+    - currencies
+    - languages
+    - regional blocs
+- size of details view based on screen size (e.g. 1/3 of screen height)
+- colors and fonts
+- fine tune layout
+- add search sections by regions
+- fix: unneccessary empty line after transalations
+- clean up code
+- unit testing
+
+Unresolved issues:
+- display of some country flags (e.g. Nepal)

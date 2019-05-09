@@ -10,10 +10,10 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-var countries = [Country]()
+var countries = [CountryHeader]()
 
 let searchController = UISearchController(searchResultsController: nil)
-var filteredCountries = [Country]()
+var filteredCountries = [CountryHeader]()
 
 
 class MainScreenViewController: CustomViewController {
@@ -28,6 +28,11 @@ class MainScreenViewController: CustomViewController {
         countriesTableView.dataSource = self
         
         setUpSearchController()
+        
+        //Set up pull to reload data
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
+        countriesTableView.refreshControl = refresh
 
         updateCountriesArray()
     }
@@ -43,12 +48,15 @@ class MainScreenViewController: CustomViewController {
                 
                 let countriesAsJSONs = JSON(response.result.value).arrayValue
                 
-                countries = countriesAsJSONs.map { Country(name: JSON($0)["name"].stringValue, nativeName: JSON($0)["nativeName"].stringValue, flagURL: JSON($0)["flag"].stringValue, alpha2Code: JSON($0)["alpha2Code"].stringValue)}
+                countries = countriesAsJSONs.map { CountryHeader(name: JSON($0)["name"].stringValue, nativeName: JSON($0)["nativeName"].stringValue, flagURL: JSON($0)["flag"].stringValue, alpha2Code: JSON($0)["alpha2Code"].stringValue)}
                 self.countriesTableView.reloadData()
-                
+    
             } else {
+    
                 self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list to retry.")
             }
+            
+            self.countriesTableView.refreshControl?.endRefreshing()
         }
         
     }
@@ -71,6 +79,9 @@ extension MainScreenViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
+    @objc func refresh() {
+        updateCountriesArray()
+    }
 }
 
 
@@ -96,7 +107,7 @@ extension MainScreenViewController: UISearchResultsUpdating {
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        filteredCountries = countries.filter({( country : Country) -> Bool in
+        filteredCountries = countries.filter({( country : CountryHeader) -> Bool in
             return country.name.lowercased().contains(searchText.lowercased()) || country.nativeName.lowercased().contains(searchText.lowercased())
         })
         

@@ -14,7 +14,7 @@ class CountryCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var nativeNameLabel: UILabel!
     
-    func setCountry(_ country : Country) {
+    func setCountry(_ country : CountryHeader) {
         nameLabel.text = country.name
         nativeNameLabel.text = country.nativeName
     }

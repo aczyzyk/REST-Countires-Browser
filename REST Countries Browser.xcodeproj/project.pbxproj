@@ -17,7 +17,7 @@
 		40B99CAD22841D5F0086AD85 /* CustomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B99CAC22841D5F0086AD85 /* CustomViewController.swift */; };
 		40D1B08322830DF40059D985 /* DetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D1B08222830DF40059D985 /* DetailsTableViewCell.swift */; };
 		40D521EF228077B600AD18CE /* CountryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40D521EE228077B600AD18CE /* CountryCell.swift */; };
-		40F254AA2280362C00003328 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F254A92280362C00003328 /* Country.swift */; };
+		40F254AA2280362C00003328 /* CountryHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F254A92280362C00003328 /* CountryHeader.swift */; };
 		7E2DDAF73405D29B867F9FA1 /* Pods_REST_Countries_Browser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A3B01FEEEEE3469DAE1977E /* Pods_REST_Countries_Browser.framework */; };
 		89CD8A0C9067FC6201845B52 /* Pods_REST_Countries_BrowserTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7333A7F2B0DF78457F72A375 /* Pods_REST_Countries_BrowserTests.framework */; };
 /* End PBXBuildFile section */
@@ -48,7 +48,7 @@
 		40B99CAC22841D5F0086AD85 /* CustomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewController.swift; sourceTree = "<group>"; };
 		40D1B08222830DF40059D985 /* DetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTableViewCell.swift; sourceTree = "<group>"; };
 		40D521EE228077B600AD18CE /* CountryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryCell.swift; sourceTree = "<group>"; };
-		40F254A92280362C00003328 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		40F254A92280362C00003328 /* CountryHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryHeader.swift; sourceTree = "<group>"; };
 		6A3B01FEEEEE3469DAE1977E /* Pods_REST_Countries_Browser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_REST_Countries_Browser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7333A7F2B0DF78457F72A375 /* Pods_REST_Countries_BrowserTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_REST_Countries_BrowserTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF54309DB0B00D6FF76B4A9F /* Pods-REST Countries Browser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-REST Countries Browser.release.xcconfig"; path = "Target Support Files/Pods-REST Countries Browser/Pods-REST Countries Browser.release.xcconfig"; sourceTree = "<group>"; };
@@ -130,7 +130,7 @@
 		40F254A6228035E300003328 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				40F254A92280362C00003328 /* Country.swift */,
+				40F254A92280362C00003328 /* CountryHeader.swift */,
 				40161B792282B26800473100 /* CountryDetails.swift */,
 			);
 			path = Model;
@@ -149,8 +149,8 @@
 		40F254A8228035F200003328 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				4065410E228034CD00953E27 /* MainScreenViewController.swift */,
 				40B99CAC22841D5F0086AD85 /* CustomViewController.swift */,
+				4065410E228034CD00953E27 /* MainScreenViewController.swift */,
 				404D58082281600C00B17E2A /* DetailsScreenViewController.swift */,
 			);
 			path = Controller;
@@ -352,7 +352,7 @@
 				40D521EF228077B600AD18CE /* CountryCell.swift in Sources */,
 				4065410F228034CD00953E27 /* MainScreenViewController.swift in Sources */,
 				404D58092281600C00B17E2A /* DetailsScreenViewController.swift in Sources */,
-				40F254AA2280362C00003328 /* Country.swift in Sources */,
+				40F254AA2280362C00003328 /* CountryHeader.swift in Sources */,
 				4065410D228034CD00953E27 /* AppDelegate.swift in Sources */,
 				40161B7A2282B26800473100 /* CountryDetails.swift in Sources */,
 				40D1B08322830DF40059D985 /* DetailsTableViewCell.swift in Sources */,

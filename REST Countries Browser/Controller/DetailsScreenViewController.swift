@@ -23,7 +23,7 @@ class DetailsScreenViewController: CustomViewController {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var detailsTableView: UITableView!
     
-    var selectedCountry : Country?
+    var selectedCountry : CountryHeader?
     var countryDetails : CountryDetails?
     var simpleArray = [(String, String)]()
     
@@ -35,6 +35,11 @@ class DetailsScreenViewController: CustomViewController {
         detailsTableView.delegate = self
         detailsTableView.dataSource = self
         
+        //Set up pull to reload data
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
+        detailsTableView.refreshControl = refresh
+        
         if let selectedCountry = selectedCountry {
             displayBasicCountryInfo(for: selectedCountry)
             updateCountryDetails(for: selectedCountry)
@@ -43,14 +48,14 @@ class DetailsScreenViewController: CustomViewController {
     }
     
     
-    fileprivate func displayBasicCountryInfo(for country: Country) {
+    fileprivate func displayBasicCountryInfo(for country: CountryHeader) {
         nameLabel.text = country.name
         nativeNameLabel.text = country.nativeName
         displayCountryFlag(flagURL: country.flagURL)
     }
     
     
-    fileprivate func updateCountryDetails(for country: Country) {
+    fileprivate func updateCountryDetails(for country: CountryHeader) {
         
         let dataRequestURL = "https://restcountries.eu/rest/v2/alpha/\(country.alpha2Code)"
         
@@ -70,6 +75,8 @@ class DetailsScreenViewController: CustomViewController {
                 self.countryDetails = nil
                 self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list to retry.")
             }
+            
+            self.detailsTableView.refreshControl?.endRefreshing()
         }
         
     }
@@ -130,5 +137,9 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
-    
+    @objc func refresh() {
+        if let selectedCountry = selectedCountry {
+            updateCountryDetails(for: selectedCountry)
+        }
+    }
 }

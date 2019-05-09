@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Country {
+struct CountryHeader {
     let name : String
     let nativeName : String
     let flagURL : String

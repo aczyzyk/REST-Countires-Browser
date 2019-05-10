@@ -29,8 +29,8 @@ struct CountryDetails {
     let borders : [String]
     let nativeName : String
     let numericCode : Int
-    let currencies : [[String : String]]
-    let languages : [[String : String]]
+    let currencies : [Currency]
+    let languages : [Language]
     let translations : [String : String]
     let flag : String
     let regionalBlocs : [RegionalBloc]
@@ -41,6 +41,19 @@ struct CountryDetails {
         let name : String
         let otherAcronyms : [String]
         let otherNames : [String]
+    }
+    
+    struct Currency {
+        let name : String
+        let symbol : String
+        let code : String
+    }
+    
+    struct Language {
+        let name : String
+        let nativeName : String
+        let iso639_1 : String
+        let iso639_2 : String
     }
     
     
@@ -64,18 +77,39 @@ struct CountryDetails {
         borders = countryDetailsJSON["borders"].arrayObject as? [String] ?? [String]()
         nativeName = countryDetailsJSON["nativeName"].stringValue
         numericCode = countryDetailsJSON["numericCode"].intValue
-        currencies = countryDetailsJSON["currencies"].arrayObject as? [[String : String]] ?? [[String : String]]()
-        languages = countryDetailsJSON["languages"].arrayObject as? [[String : String]] ?? [[String : String]]()
+
+        do {
+            var tempArray = [Currency]()
+            let tempReference = countryDetailsJSON["currencies"].arrayObject as? [[String : String]] ?? [[String : String]]()
+            for item in tempReference {
+                let newItem = Currency(name: JSON(item)["name"].stringValue, symbol: JSON(item)["symbol"].stringValue, code: JSON(item)["code"].stringValue)
+                tempArray.append(newItem)
+            }
+            currencies = tempArray
+        }
+        
+        do {
+            var tempArray = [Language]()
+            let tempReference = countryDetailsJSON["languages"].arrayObject as? [[String : String]] ?? [[String : String]]()
+            for item in tempReference {
+                let newItem = Language(name: JSON(item)["name"].stringValue, nativeName: JSON(item)["nativeName"].stringValue, iso639_1: JSON(item)["iso639_1"].stringValue, iso639_2: JSON(item)["iso639_2"].stringValue)
+                tempArray.append(newItem)
+            }
+            languages = tempArray
+        }
+        
         translations = countryDetailsJSON["translations"].dictionaryObject as? [String : String] ?? [String : String]()
         flag = countryDetailsJSON["flag"].stringValue
         
-        let tempArray = countryDetailsJSON["regionalBlocs"].arrayObject as! [Any]
-        var tempBlocsArray = [RegionalBloc]()
-        for bloc in tempArray {
-            let regionalBloc = RegionalBloc(acronym: JSON(bloc)["acronym"].stringValue, name: JSON(bloc)["name"].stringValue, otherAcronyms: JSON(bloc)["otherAcronyms"].arrayObject as? [String] ?? [String](), otherNames: JSON(bloc)["otherNames"].arrayObject as? [String] ?? [String]())
-            tempBlocsArray.append(regionalBloc)
+        do {
+            var tempArray = [RegionalBloc]()
+            let tempReference = countryDetailsJSON["regionalBlocs"].arrayObject as! [Any]
+            for item in tempReference {
+                let newItem = RegionalBloc(acronym: JSON(item)["acronym"].stringValue, name: JSON(item)["name"].stringValue, otherAcronyms: JSON(item)["otherAcronyms"].arrayObject as? [String] ?? [String](), otherNames: JSON(item)["otherNames"].arrayObject as? [String] ?? [String]())
+                tempArray.append(newItem)
+            }
+            regionalBlocs = tempArray
         }
-        regionalBlocs = tempBlocsArray
         
         cioc = countryDetailsJSON["cioc"].stringValue
     }

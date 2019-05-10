@@ -46,10 +46,14 @@ class MainScreenViewController: CustomViewController {
             
             if response.result.isSuccess {
                 
-                let countriesAsJSONs = JSON(response.result.value).arrayValue
-                
-                countries = countriesAsJSONs.map { CountryHeader(name: JSON($0)["name"].stringValue, nativeName: JSON($0)["nativeName"].stringValue, flagURL: JSON($0)["flag"].stringValue, alpha2Code: JSON($0)["alpha2Code"].stringValue)}
-                self.countriesTableView.reloadData()
+                if let value = response.result.value {
+                    
+                    let RESTCountriesJSON = JSON(value).arrayValue
+                    
+                    countries = RESTCountriesJSON.map { CountryHeader(name: JSON($0)["name"].stringValue, nativeName: JSON($0)["nativeName"].stringValue, flagURL: JSON($0)["flag"].stringValue, alpha2Code: JSON($0)["alpha2Code"].stringValue)}
+                    self.countriesTableView.reloadData()
+                }
+
     
             } else {
     

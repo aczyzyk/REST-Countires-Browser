@@ -25,7 +25,15 @@ class DetailsScreenViewController: CustomViewController {
     
     var selectedCountry : CountryHeader?
     var countryDetails : CountryDetails?
-    var sections = [Section]()
+    
+    //Define structure of sections for details table view
+    let sections : [Section] = [
+        Section(title: "Names", items: [Item.name, Item.nativeName, Item.altSpellings, Item.translations, Item.demonym]),
+        Section(title: "General Info", items: [Item.capital, Item.region, Item.subregion, Item.area, Item.population, Item.gini, Item.latlng, Item.borders, Item.timezones, Item.flag]),
+        Section(title: "Languages", items: [Item.languages]),
+        Section(title: "Currencies", items: [Item.currencies]),
+        Section(title: "Regional Blocs", items: [Item.regionalBlocs]),
+        Section(title: "Codes", items: [Item.alpha2Code, Item.alpha3Code, Item.callingCodes, Item.topLevelDomain, Item.numericCode,Item.cioc])]
     
     
     override func viewDidLoad() {
@@ -33,7 +41,6 @@ class DetailsScreenViewController: CustomViewController {
         
         detailsTableView.delegate = self
         detailsTableView.dataSource = self
-        
         detailsTableView.estimatedRowHeight = detailsTableView.rowHeight
         detailsTableView.rowHeight = UITableView.automaticDimension
         
@@ -41,16 +48,6 @@ class DetailsScreenViewController: CustomViewController {
         let refresh = UIRefreshControl()
         refresh.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
         detailsTableView.refreshControl = refresh
-        
-        //Define sections for details table view
-        sections = [
-            Section(title: "Names", items: [Item.name, Item.nativeName, Item.altSpellings, Item.translations, Item.demonym]),
-            Section(title: "General Info", items: [Item.capital, Item.region, Item.subregion, Item.area, Item.population, Item.gini, Item.latlng, Item.borders, Item.timezones]),
-            Section(title: "Languages", items: [Item.languages]),
-            Section(title: "Currencies", items: [Item.currencies]),
-            Section(title: "Regional Blocs", items: [Item.regionalBlocs]),
-            Section(title: "Codes", items: [Item.alpha2Code, Item.alpha3Code, Item.callingCodes, Item.topLevelDomain, Item.numericCode,Item.cioc])
-        ]
         
         if let selectedCountry = selectedCountry {
             displayBasicCountryInfo(for: selectedCountry)
@@ -75,13 +72,18 @@ class DetailsScreenViewController: CustomViewController {
             
             if response.result.isSuccess {
                 
-                self.countryDetails = CountryDetails(countryDetailsJSON: JSON(response.result.value))
-                self.detailsTableView.reloadData()
-                self.zoomInMap()
-            
+                if let value = response.result.value {
+                    
+                    self.countryDetails = CountryDetails(countryDetailsJSON: JSON(value))
+                    self.detailsTableView.reloadData()
+                    self.zoomInMap()
+                    self.displayCountryFlag(flagURL: self.countryDetails?.flag ?? self.selectedCountry?.flagURL ?? "")
+
+                }
+                
             } else {
                 self.countryDetails = nil
-                self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list to retry.")
+                self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list below the map to retry.")
             }
             
             self.detailsTableView.refreshControl?.endRefreshing()
@@ -212,23 +214,13 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
                 cell.setDetail(("Numeric Code", String(countryDetails.numericCode)))
                 
             case .currencies:
-                var value = ""
-                for currency in countryDetails.currencies {
-                    value += currency.reduce("") { result, item in "\(result)\(item.key): \(item.value)\n" }
-                    value += "\n"
-                }
-                cell.setDetail(("", value))
+                cell.setDetail(("", countryDetails.currencies.map { "\($0.name)\nsymbol: \($0.symbol)\ncode: \($0.code)\n" } .joined(separator: "\n")))
                 
             case .languages:
-                var value = ""
-                for language in countryDetails.languages {
-                    value += language.reduce("") { result, item in "\(result)\(item.key): \(item.value)\n" }
-                    value += "\n"
-                }
-                cell.setDetail(("", value))
+                cell.setDetail(("", countryDetails.languages.map { "\($0.name) (\($0.nativeName))\niso639_1: \($0.iso639_1)\niso639_2: \($0.iso639_2)\n" } .joined(separator: "\n") ))
                 
             case .translations:
-                cell.setDetail(("Translations", countryDetails.translations.reduce("") { result, item in "\(result)\(item.key): \(item.value)\n" }))
+                cell.setDetail(("Translations", countryDetails.translations.map { "\($0.key): \($0.value)" }.joined(separator: "\n")))
                 
             case .flag:
                 cell.setDetail(("Flag URL", countryDetails.flag))
@@ -241,7 +233,7 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
                     value += bloc.otherNames.joined(separator: "\n")
                     if !bloc.otherAcronyms.isEmpty { value += "Other acronyms:\n" }
                     value += bloc.otherAcronyms.joined(separator: "\n")
-                    value += "\n"
+                    value += "\n\n"
                 }
                 cell.setDetail(("", value))
             case .cioc:

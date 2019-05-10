@@ -43,6 +43,17 @@ class DetailsScreenViewController: CustomViewController {
         detailsTableView.dataSource = self
         detailsTableView.estimatedRowHeight = detailsTableView.rowHeight
         detailsTableView.rowHeight = UITableView.automaticDimension
+        detailsTableView.addConstraint(NSLayoutConstraint(
+            item: detailsTableView,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1.0,
+            constant: UIScreen.main.bounds.size.height / 3))
+
+        
+        
         
         //Set up pull to reload data
         let refresh = UIRefreshControl()
@@ -244,6 +255,12 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        
+        header.textLabel?.font = MyFonts.bold
+    }
     
     @objc func refresh() {
         if let selectedCountry = selectedCountry {

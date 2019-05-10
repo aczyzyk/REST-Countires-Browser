@@ -54,7 +54,6 @@ class MainScreenViewController: CustomViewController {
                     self.countriesTableView.reloadData()
                 }
 
-    
             } else {
     
                 self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list to retry.")

@@ -1,10 +1,9 @@
 
 TO DO:
 
-- size of details view based on screen size (e.g. 1/3 of screen height)
+- size of flag based on screen size (e.g. 10% of screen height)
 - colors and fonts
 - fine tune layout
-- add search sections by regions
 - clean up code
 - unit testing
 

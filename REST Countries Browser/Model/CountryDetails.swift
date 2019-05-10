@@ -103,10 +103,12 @@ struct CountryDetails {
         
         do {
             var tempArray = [RegionalBloc]()
-            let tempReference = countryDetailsJSON["regionalBlocs"].arrayObject as! [Any]
-            for item in tempReference {
-                let newItem = RegionalBloc(acronym: JSON(item)["acronym"].stringValue, name: JSON(item)["name"].stringValue, otherAcronyms: JSON(item)["otherAcronyms"].arrayObject as? [String] ?? [String](), otherNames: JSON(item)["otherNames"].arrayObject as? [String] ?? [String]())
-                tempArray.append(newItem)
+            
+            if let tempReference = countryDetailsJSON["regionalBlocs"].arrayObject {
+                for item in tempReference {
+                    let newItem = RegionalBloc(acronym: JSON(item)["acronym"].stringValue, name: JSON(item)["name"].stringValue, otherAcronyms: JSON(item)["otherAcronyms"].arrayObject as? [String] ?? [String](), otherNames: JSON(item)["otherNames"].arrayObject as? [String] ?? [String]())
+                    tempArray.append(newItem)
+                }
             }
             regionalBlocs = tempArray
         }

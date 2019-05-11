@@ -41,10 +41,10 @@ class DetailsScreenViewController: CustomViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setCountryFlagImageViewSize()
+        
         nameLabel.textColor = MyPalette.baseText
         nativeNameLabel.textColor = MyPalette.baseText
-        
-        setCountryFlagImageViewSize()
         
         setUpDetailsTableView()
 
@@ -167,12 +167,15 @@ extension DetailsScreenViewController {
 extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSource {
     
     fileprivate func setUpDetailsTableView() {
-        //Set up details table view
+        
         detailsTableView.delegate = self
         detailsTableView.dataSource = self
+        
         detailsTableView.backgroundColor = MyPalette.background
+        
         detailsTableView.estimatedRowHeight = detailsTableView.rowHeight
         detailsTableView.rowHeight = UITableView.automaticDimension
+        
         detailsTableView.addConstraint(NSLayoutConstraint(
             item: detailsTableView!,
             attribute: .height,

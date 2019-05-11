@@ -15,8 +15,10 @@ class CountryCell: UITableViewCell {
     @IBOutlet weak var nativeNameLabel: UILabel!
     
     func setUpCell(for country : CountryHeader) {
+        
         nameLabel.text = country.name
         nativeNameLabel.text = country.nativeName
+        
         self.backgroundColor = MyPalette.background
         self.setCellSelectionColour(MyPalette.selectedItem)
         nameLabel.textColor = MyPalette.baseText

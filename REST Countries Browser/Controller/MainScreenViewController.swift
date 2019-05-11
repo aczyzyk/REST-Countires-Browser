@@ -24,19 +24,11 @@ class MainScreenViewController: CustomViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        countriesTableView.delegate = self
-        countriesTableView.dataSource = self
-        
-        setUpSearchController()
-        
-        //Set up pull to reload data
-        let refresh = UIRefreshControl()
-        refresh.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
-        countriesTableView.refreshControl = refresh
-
+        setUpCountriesTableView()
         updateCountriesArray()
     }
-        
+    
+    
     fileprivate func updateCountriesArray() {
         
         let filteredDataURL = "https://restcountries.eu/rest/v2/all?fields=name;nativeName;flag;alpha2Code"
@@ -71,6 +63,14 @@ class MainScreenViewController: CustomViewController {
 
 extension MainScreenViewController: UITableViewDataSource, UITableViewDelegate {
     
+    fileprivate func setUpCountriesTableView() {
+        countriesTableView.delegate = self
+        countriesTableView.dataSource = self
+        
+        setUpSearchController()
+        setUpPullToRefresh()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isFiltering() ? filteredCountries.count : countries.count
     }
@@ -82,6 +82,12 @@ extension MainScreenViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
+    fileprivate func setUpPullToRefresh() {
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
+        countriesTableView.refreshControl = refresh
+    }
+    
     @objc func refresh() {
         updateCountriesArray()
     }

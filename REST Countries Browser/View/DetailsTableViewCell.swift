@@ -24,9 +24,13 @@ class DetailsTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func setDetail(_ detail : (String, String)) {
+    func setUpCell(_ detail : (String, String)) {
         detailLabel.text = detail.0
         detailValue.text = detail.1
+        self.backgroundColor = MyPalette.background
+        self.setCellSelectionColour(MyPalette.selectedItem)
+        detailLabel.textColor = MyPalette.orangeText
+        detailValue.textColor = MyPalette.orangeText
     }
     
 }

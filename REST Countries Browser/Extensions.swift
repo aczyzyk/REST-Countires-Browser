@@ -11,17 +11,18 @@ import UIKit
 
 
 enum MyPalette {
-    static let background   = UIColor(hex: 0x95a5a6)
-    static let white        = UIColor(hex: 0xecf0f1)
-    static let red          = UIColor(hex: 0xe74c3c)
-    static let orange       = UIColor(hex: 0xe67e22)
-    static let yellow       = UIColor(hex: 0xf1c40f)
+    static let background = UIColor(hex: 0x95a5a6)
+    static let whiteText = UIColor(hex: 0xecf0f1)
+    static let header = UIColor(hex: 0xe74c3c)
+    static let orangeText = UIColor(hex: 0xe67e22)
+    static let selectedItem = UIColor(hex: 0xf1c40f)
 }
 
 
 enum MyFonts {
     static let regular = UIFont(name: "AvenirNext", size: 17)
     static let bold = UIFont(name: "AvenirNext-DemiBold", size: 17)
+    static let header = UIFont(name: "Avenir", size: 20)
 }
 
 
@@ -61,4 +62,15 @@ extension Int {
     var asStringWithSeparator: String {
         return Formatter.withSeparator.string(for: self) ?? ""
     }
+}
+
+
+extension UITableViewCell{
+    
+    func setCellSelectionColour(_ color : UIColor){
+        let customView = UIView()
+        customView.backgroundColor = color
+        UITableViewCell.appearance().selectedBackgroundView = customView
+    }
+    
 }

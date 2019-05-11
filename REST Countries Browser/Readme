@@ -1,7 +1,7 @@
 
 TO DO:
 
-- size of flag based on screen size (e.g. 10% of screen height)
+- flag size matching screen size
 - colors and fonts
 - fine tune layout
 - clean up code

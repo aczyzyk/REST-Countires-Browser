@@ -78,7 +78,7 @@ extension MainScreenViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "countryCell") as! CountryCell
         let country = isFiltering() ? filteredCountries[indexPath.row] : countries[indexPath.row]
-        cell.setCountry(country)
+        cell.setUpCell(for: country)
         return cell
     }
 

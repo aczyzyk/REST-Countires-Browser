@@ -36,30 +36,18 @@ class DetailsScreenViewController: CustomViewController {
         Section(title: "Codes", items: [Item.alpha2Code, Item.alpha3Code, Item.callingCodes, Item.topLevelDomain, Item.numericCode,Item.cioc])]
     
     
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        detailsTableView.delegate = self
-        detailsTableView.dataSource = self
-        detailsTableView.estimatedRowHeight = detailsTableView.rowHeight
-        detailsTableView.rowHeight = UITableView.automaticDimension
-        detailsTableView.addConstraint(NSLayoutConstraint(
-            item: detailsTableView,
-            attribute: .height,
-            relatedBy: .equal,
-            toItem: nil,
-            attribute: .notAnAttribute,
-            multiplier: 1.0,
-            constant: UIScreen.main.bounds.size.height / 3))
+        nameLabel.textColor = MyPalette.orangeText
+        nativeNameLabel.textColor = MyPalette.orangeText
+        
+        setCountryFlagImageViewSize()
+        
+        setUpDetailsTableView()
 
-        
-        
-        
-        //Set up pull to reload data
-        let refresh = UIRefreshControl()
-        refresh.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
-        detailsTableView.refreshControl = refresh
-        
         if let selectedCountry = selectedCountry {
             displayBasicCountryInfo(for: selectedCountry)
             updateCountryDetails(for: selectedCountry)
@@ -108,6 +96,32 @@ class DetailsScreenViewController: CustomViewController {
 //MARK: - Flag
 
 extension DetailsScreenViewController {
+  
+
+    fileprivate func setCountryFlagImageViewSize() {
+        
+        let height = UIScreen.main.bounds.size.height * 0.07
+        let width = height * 2
+        
+        flagImageView.addConstraint(NSLayoutConstraint(
+            item: flagImageView!,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1.0,
+            constant: height))
+        
+        flagImageView.addConstraint(NSLayoutConstraint(
+            item: flagImageView!,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1.0,
+            constant: width))
+    }
+    
     
     fileprivate func displayCountryFlag(flagURL: String) {
         
@@ -116,7 +130,10 @@ extension DetailsScreenViewController {
         let SVGCoder = SDImageSVGCoder.shared
         SDImageCodersManager.shared.addCoder(SVGCoder)
         
-        let SVGImageSize = CGSize(width: 60, height: 40)
+        let height = UIScreen.main.bounds.size.height * 0.07
+        let width = height * 1.5
+        
+        let SVGImageSize = CGSize(width: width, height: height)
         flagImageView.sd_setImage(with: url, placeholderImage: nil, options: [], context: [.svgImageSize : SVGImageSize])
     }
     
@@ -149,6 +166,30 @@ extension DetailsScreenViewController {
 
 extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSource {
     
+    fileprivate func setUpDetailsTableView() {
+        //Set up details table view
+        detailsTableView.delegate = self
+        detailsTableView.dataSource = self
+        detailsTableView.backgroundColor = MyPalette.background
+        detailsTableView.estimatedRowHeight = detailsTableView.rowHeight
+        detailsTableView.rowHeight = UITableView.automaticDimension
+        detailsTableView.addConstraint(NSLayoutConstraint(
+            item: detailsTableView!,
+            attribute: .height,
+            relatedBy: .equal,
+            toItem: nil,
+            attribute: .notAnAttribute,
+            multiplier: 1.0,
+            constant: UIScreen.main.bounds.size.height / 3))
+        
+        //Set up pull to reload data
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(self.refresh), for: .valueChanged)
+        refresh.backgroundColor = MyPalette.background
+        detailsTableView.refreshControl = refresh
+    }
+    
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -171,70 +212,70 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
             switch sections[indexPath.section].items[indexPath.row] {
                 
             case .name:
-                cell.setDetail(("Name", countryDetails.name))
+                cell.setUpCell(("Name", countryDetails.name))
                 
             case .topLevelDomain:
-                cell.setDetail(("Top Level Domains", countryDetails.topLevelDomain.joined(separator: "\n")))
+                cell.setUpCell(("Top Level Domains", countryDetails.topLevelDomain.joined(separator: "\n")))
                 
             case .alpha2Code:
-                cell.setDetail(("alpha2Code", countryDetails.alpha2Code))
+                cell.setUpCell(("alpha2Code", countryDetails.alpha2Code))
                 
             case .alpha3Code:
-                cell.setDetail(("alpha3Code", countryDetails.alpha3Code))
+                cell.setUpCell(("alpha3Code", countryDetails.alpha3Code))
                 
             case .callingCodes:
-                cell.setDetail(("Calling Codes", countryDetails.callingCodes.joined(separator: "\n") ))
+                cell.setUpCell(("Calling Codes", countryDetails.callingCodes.joined(separator: "\n") ))
                 
             case .capital:
-                cell.setDetail(("Capital", countryDetails.capital))
+                cell.setUpCell(("Capital", countryDetails.capital))
                 
             case .altSpellings:
-                cell.setDetail(("Alternative Spellings", countryDetails.altSpellings.joined(separator: "\n")))
+                cell.setUpCell(("Alternative Spellings", countryDetails.altSpellings.joined(separator: "\n")))
                 
             case .region:
-                cell.setDetail(("Region", countryDetails.region))
+                cell.setUpCell(("Region", countryDetails.region))
                 
             case .subregion:
-                cell.setDetail(("Subregion", countryDetails.subregion))
+                cell.setUpCell(("Subregion", countryDetails.subregion))
                 
             case .population:
-                cell.setDetail(("Population", countryDetails.population.asStringWithSeparator))
+                cell.setUpCell(("Population", countryDetails.population.asStringWithSeparator))
                 
             case .latlng:
-                cell.setDetail(("Coordinates", "(\(countryDetails.latlng.0), \(countryDetails.latlng.1))"))
+                cell.setUpCell(("Coordinates", "(\(countryDetails.latlng.0), \(countryDetails.latlng.1))"))
                 
             case .demonym:
-                cell.setDetail(("Demonym", countryDetails.demonym))
+                cell.setUpCell(("Demonym", countryDetails.demonym))
                 
             case .area:
-                cell.setDetail(("Area", countryDetails.area.asStringWithSeparator))
+                cell.setUpCell(("Area", countryDetails.area.asStringWithSeparator))
                 
             case .gini:
-                cell.setDetail(("GINI", String(countryDetails.gini)))
+                cell.setUpCell(("GINI", String(countryDetails.gini)))
                 
             case .timezones:
-                cell.setDetail(("Time Zones", countryDetails.timezones.joined(separator: "\n")))
+                cell.setUpCell(("Time Zones", countryDetails.timezones.joined(separator: "\n")))
                 
             case .borders:
-                cell.setDetail(("Borders", countryDetails.borders.joined(separator: "\n")))
+                cell.setUpCell(("Borders", countryDetails.borders.joined(separator: "\n")))
                 
             case .nativeName:
-                cell.setDetail(("Native Name", countryDetails.nativeName))
+                cell.setUpCell(("Native Name", countryDetails.nativeName))
                 
             case .numericCode:
-                cell.setDetail(("Numeric Code", String(countryDetails.numericCode)))
+                cell.setUpCell(("Numeric Code", String(countryDetails.numericCode)))
                 
             case .currencies:
-                cell.setDetail(("", countryDetails.currencies.map { "\($0.name)\nsymbol: \($0.symbol)\ncode: \($0.code)\n" } .joined(separator: "\n")))
+                cell.setUpCell(("", countryDetails.currencies.map { "\($0.name)\nsymbol: \($0.symbol)\ncode: \($0.code)\n" } .joined(separator: "\n")))
                 
             case .languages:
-                cell.setDetail(("", countryDetails.languages.map { "\($0.name) (\($0.nativeName))\niso639_1: \($0.iso639_1)\niso639_2: \($0.iso639_2)\n" } .joined(separator: "\n") ))
+                cell.setUpCell(("", countryDetails.languages.map { "\($0.name) (\($0.nativeName))\niso639_1: \($0.iso639_1)\niso639_2: \($0.iso639_2)\n" } .joined(separator: "\n") ))
                 
             case .translations:
-                cell.setDetail(("Translations", countryDetails.translations.map { "\($0.key): \($0.value)" }.joined(separator: "\n")))
+                cell.setUpCell(("Translations", countryDetails.translations.map { "\($0.key): \($0.value)" }.joined(separator: "\n")))
                 
             case .flag:
-                cell.setDetail(("Flag URL", countryDetails.flag))
+                cell.setUpCell(("Flag URL", countryDetails.flag))
                 
             case .regionalBlocs:
                 var value = ""
@@ -246,9 +287,9 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
                     value += bloc.otherAcronyms.joined(separator: "\n")
                     value += "\n\n"
                 }
-                cell.setDetail(("", value))
+                cell.setUpCell(("", value))
             case .cioc:
-                cell.setDetail(("CIOC", countryDetails.cioc))
+                cell.setUpCell(("CIOC", countryDetails.cioc))
             }
         }
 
@@ -258,8 +299,9 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        
+        header.tintColor = MyPalette.header
         header.textLabel?.font = MyFonts.bold
+        header.textLabel?.textColor = MyPalette.orangeText
     }
     
     @objc func refresh() {

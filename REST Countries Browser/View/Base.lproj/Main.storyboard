@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Main Screen View Controller-->
+        <!--REST Countries Browser-->
         <scene sceneID="zPp-bc-qFC">
             <objects>
                 <viewController id="TWv-Sk-58m" customClass="MainScreenViewController" customModule="REST_Countries_Browser" customModuleProvider="target" sceneMemberID="viewController">
@@ -78,7 +78,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gcK-a6-nVW"/>
                     </view>
-                    <navigationItem key="navigationItem" id="aqd-DX-aed"/>
+                    <navigationItem key="navigationItem" title="REST Countries Browser" id="aqd-DX-aed">
+                        <barButtonItem key="backBarButtonItem" systemItem="search" id="ytV-an-TK0"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="countriesTableView" destination="T0v-SY-8zb" id="VZJ-ri-G2z"/>
                         <segue destination="iCd-WM-5SR" kind="show" identifier="MainToDetails" id="tGt-9s-B6W"/>
@@ -96,15 +98,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="topRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UL0-Kr-jMu">
-                                <rect key="frame" x="324" y="98" width="80" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="8z0-NF-lIy"/>
-                                    <constraint firstAttribute="height" constant="40" id="lLy-ak-pOl"/>
-                                </constraints>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="topRight" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UL0-Kr-jMu">
+                                <rect key="frame" x="83" y="98" width="311" height="40"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="k9E-tu-kKo">
-                                <rect key="frame" x="10" y="98" width="304" height="23"/>
+                                <rect key="frame" x="20" y="98" width="53" height="23"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="23" id="sIL-p5-TbR"/>
                                 </constraints>
@@ -157,7 +155,7 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="cf7-WK-9lG">
-                                <rect key="frame" x="10" y="121" width="304" height="21"/>
+                                <rect key="frame" x="20" y="121" width="40.5" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="wIq-fh-MZ5"/>
                                 </constraints>
@@ -173,19 +171,17 @@
                         <constraints>
                             <constraint firstItem="k9E-tu-kKo" firstAttribute="top" secondItem="vaj-bs-0YF" secondAttribute="top" constant="10" id="61J-xX-MCN"/>
                             <constraint firstItem="vaj-bs-0YF" firstAttribute="trailing" secondItem="eoQ-eZ-pv0" secondAttribute="trailing" constant="10" id="6b9-fz-Dgt"/>
-                            <constraint firstItem="eoQ-eZ-pv0" firstAttribute="top" secondItem="UL0-Kr-jMu" secondAttribute="bottom" constant="20" id="79E-FO-j7d"/>
                             <constraint firstItem="8jt-vi-AvD" firstAttribute="top" secondItem="eoQ-eZ-pv0" secondAttribute="bottom" constant="10" id="8eR-qT-GOd"/>
                             <constraint firstItem="cf7-WK-9lG" firstAttribute="top" secondItem="k9E-tu-kKo" secondAttribute="bottom" id="Bee-Be-1Ps"/>
                             <constraint firstItem="vaj-bs-0YF" firstAttribute="trailing" secondItem="8jt-vi-AvD" secondAttribute="trailing" constant="10" id="DIN-8n-xKd"/>
                             <constraint firstItem="vaj-bs-0YF" firstAttribute="bottom" secondItem="8jt-vi-AvD" secondAttribute="bottom" id="LWy-V5-zFz"/>
-                            <constraint firstItem="UL0-Kr-jMu" firstAttribute="leading" secondItem="k9E-tu-kKo" secondAttribute="trailing" constant="10" id="Pyv-ht-FWa"/>
-                            <constraint firstItem="k9E-tu-kKo" firstAttribute="leading" secondItem="vaj-bs-0YF" secondAttribute="leading" constant="10" id="SAa-57-A61"/>
+                            <constraint firstItem="eoQ-eZ-pv0" firstAttribute="top" secondItem="UL0-Kr-jMu" secondAttribute="bottom" constant="10" id="LuS-6C-uyS"/>
+                            <constraint firstItem="k9E-tu-kKo" firstAttribute="leading" secondItem="vaj-bs-0YF" secondAttribute="leading" constant="20" id="SAa-57-A61"/>
                             <constraint firstItem="vaj-bs-0YF" firstAttribute="trailing" secondItem="UL0-Kr-jMu" secondAttribute="trailing" constant="10" id="dYE-EH-gt1"/>
-                            <constraint firstItem="cf7-WK-9lG" firstAttribute="leading" secondItem="vaj-bs-0YF" secondAttribute="leading" constant="10" id="dYh-Rd-BFY"/>
+                            <constraint firstItem="cf7-WK-9lG" firstAttribute="leading" secondItem="vaj-bs-0YF" secondAttribute="leading" constant="20" id="dYh-Rd-BFY"/>
                             <constraint firstItem="UL0-Kr-jMu" firstAttribute="top" secondItem="vaj-bs-0YF" secondAttribute="top" constant="10" id="djd-Wh-1hy"/>
                             <constraint firstItem="eoQ-eZ-pv0" firstAttribute="leading" secondItem="vaj-bs-0YF" secondAttribute="leading" constant="10" id="dpp-pt-KDR"/>
                             <constraint firstItem="8jt-vi-AvD" firstAttribute="leading" secondItem="vaj-bs-0YF" secondAttribute="leading" constant="10" id="rHJ-Ef-Mue"/>
-                            <constraint firstItem="UL0-Kr-jMu" firstAttribute="leading" secondItem="cf7-WK-9lG" secondAttribute="trailing" constant="10" id="sbm-oi-jvf"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vaj-bs-0YF"/>
                     </view>

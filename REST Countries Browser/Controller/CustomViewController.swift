@@ -13,9 +13,9 @@ class CustomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.tintColor = MyPalette.whiteText
+        navigationController?.navigationBar.tintColor = MyPalette.navigationBarText
         navigationController?.navigationBar.barTintColor = MyPalette.background
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : MyPalette.whiteText]
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : MyPalette.navigationBarText]
         
         self.view.backgroundColor = MyPalette.background
         

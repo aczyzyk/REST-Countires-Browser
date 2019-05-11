@@ -19,7 +19,7 @@ class CountryCell: UITableViewCell {
         nativeNameLabel.text = country.nativeName
         self.backgroundColor = MyPalette.background
         self.setCellSelectionColour(MyPalette.selectedItem)
-        nameLabel.textColor = MyPalette.orangeText
-        nativeNameLabel.textColor = MyPalette.orangeText
+        nameLabel.textColor = MyPalette.baseText
+        nativeNameLabel.textColor = MyPalette.baseText
     }
 }

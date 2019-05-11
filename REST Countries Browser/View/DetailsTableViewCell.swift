@@ -29,8 +29,8 @@ class DetailsTableViewCell: UITableViewCell {
         detailValue.text = detail.1
         self.backgroundColor = MyPalette.background
         self.setCellSelectionColour(MyPalette.selectedItem)
-        detailLabel.textColor = MyPalette.orangeText
-        detailValue.textColor = MyPalette.orangeText
+        detailLabel.textColor = MyPalette.baseText
+        detailValue.textColor = MyPalette.baseText
     }
     
 }

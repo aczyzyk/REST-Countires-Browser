@@ -11,11 +11,11 @@ import UIKit
 
 
 enum MyPalette {
-    static let background = UIColor(hex: 0x95a5a6)
-    static let whiteText = UIColor(hex: 0xecf0f1)
-    static let header = UIColor(hex: 0xe74c3c)
-    static let orangeText = UIColor(hex: 0xe67e22)
-    static let selectedItem = UIColor(hex: 0xf1c40f)
+    static let background = UIColor(hex: 0xFFF5EB)
+    static let navigationBarText = UIColor(hex: 0xDBCC8F)
+    static let header = UIColor(hex: 0xF6E0B3)
+    static let baseText = UIColor(hex: 0x4E4E4E)
+    static let selectedItem = UIColor.clear
 }
 
 

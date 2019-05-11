@@ -41,8 +41,8 @@ class DetailsScreenViewController: CustomViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        nameLabel.textColor = MyPalette.orangeText
-        nativeNameLabel.textColor = MyPalette.orangeText
+        nameLabel.textColor = MyPalette.baseText
+        nativeNameLabel.textColor = MyPalette.baseText
         
         setCountryFlagImageViewSize()
         
@@ -301,7 +301,7 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
         let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         header.tintColor = MyPalette.header
         header.textLabel?.font = MyFonts.bold
-        header.textLabel?.textColor = MyPalette.orangeText
+        header.textLabel?.textColor = MyPalette.baseText
     }
     
     @objc func refresh() {

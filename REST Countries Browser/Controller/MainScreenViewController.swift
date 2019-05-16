@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Alamofire
-import SwiftyJSON
 
 var countries = [CountryHeader]()
 
@@ -31,28 +29,33 @@ class MainScreenViewController: CustomViewController {
     
     fileprivate func updateCountriesArray() {
         
-        let filteredDataURL = "https://restcountries.eu/rest/v2/all?fields=name;nativeName;flag;alpha2Code"
+        let url = URL(string: "https://restcountries.eu/rest/v2/all/?fields=name;nativeName;flag;alpha2Code")
         
-        Alamofire.request(filteredDataURL, method: .get).responseJSON {
-            response in
+        URLSession.shared.dataTask(with: url!) { (data, response, error) in
             
-            if response.result.isSuccess {
+            if let data = data {
                 
-                if let value = response.result.value {
+                do {
+                    countries = try JSONDecoder().decode([CountryHeader].self, from: data)
+                    DispatchQueue.main.async {
+                        self.countriesTableView.reloadData()
+                    }
                     
-                    let RESTCountriesJSON = JSON(value).arrayValue
-                    
-                    countries = RESTCountriesJSON.map { CountryHeader(name: JSON($0)["name"].stringValue, nativeName: JSON($0)["nativeName"].stringValue, flagURL: JSON($0)["flag"].stringValue, alpha2Code: JSON($0)["alpha2Code"].stringValue)}
-                    self.countriesTableView.reloadData()
+                } catch {
+                    print("Failed to parse JSON")
                 }
-
+                
             } else {
-    
-                self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list to retry.")
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list to retry.")
+                }
             }
             
-            self.countriesTableView.refreshControl?.endRefreshing()
-        }
+            DispatchQueue.main.async {
+                self.countriesTableView.refreshControl?.endRefreshing()
+            }
+            
+            }.resume()
         
     }
     

@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct CountryHeader {
+struct CountryHeader : Decodable{
     let name : String
     let nativeName : String
-    let flagURL : String
+    let flag : String
     let alpha2Code : String
 }

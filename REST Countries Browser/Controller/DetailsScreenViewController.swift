@@ -42,6 +42,7 @@ class DetailsScreenViewController: CustomViewController {
         super.viewDidLoad()
         
         setCountryFlagImageViewSize()
+        print("Selected country: \(selectedCountry)")
         
         nameLabel.textColor = MyPalette.baseText
         nativeNameLabel.textColor = MyPalette.baseText
@@ -58,7 +59,7 @@ class DetailsScreenViewController: CustomViewController {
     fileprivate func displayBasicCountryInfo(for country: CountryHeader) {
         nameLabel.text = country.name
         nativeNameLabel.text = country.nativeName
-        displayCountryFlag(flagURL: country.flagURL)
+        displayCountryFlag(flagURL: country.flag)
     }
     
     
@@ -76,7 +77,7 @@ class DetailsScreenViewController: CustomViewController {
                     self.countryDetails = CountryDetails(countryDetailsJSON: JSON(value))
                     self.detailsTableView.reloadData()
                     self.zoomInMap()
-                    self.displayCountryFlag(flagURL: self.countryDetails?.flag ?? self.selectedCountry?.flagURL ?? "")
+                    self.displayCountryFlag(flagURL: self.countryDetails?.flag ?? self.selectedCountry?.flag ?? "")
 
                 }
                 

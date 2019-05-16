@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct CountryHeader : Decodable{
+struct CountryHeader : Decodable {
     let name : String
     let nativeName : String
     let flag : String

@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Alamofire
-import SwiftyJSON
 import MapKit
 import CoreLocation
 import SDWebImage
@@ -36,7 +34,6 @@ class DetailsScreenViewController: CustomViewController {
         Section(title: "Codes", items: [Item.alpha2Code, Item.alpha3Code, Item.callingCodes, Item.topLevelDomain, Item.numericCode,Item.cioc])]
     
     
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,9 +72,9 @@ class DetailsScreenViewController: CustomViewController {
                     DispatchQueue.main.async {
                         self.detailsTableView.reloadData()
                         self.displayCountryFlag(flagURL: self.countryDetails?.flag ?? self.selectedCountry?.flag ?? "")
+                        self.zoomInMap()
                     }
-//                    self.zoomInMap()
-                    #warning("Fix zooming of map async")
+
                 } catch {
                     print("Failed to parse JSON")
                 }
@@ -120,7 +117,7 @@ extension DetailsScreenViewController {
         
         flagImageView.addConstraint(NSLayoutConstraint(
             item: flagImageView!,
-            attribute: .height,
+            attribute: .width,
             relatedBy: .equal,
             toItem: nil,
             attribute: .notAnAttribute,
@@ -153,15 +150,14 @@ extension DetailsScreenViewController {
     func zoomInMap() {
         
         if let countryDetails = countryDetails {
-
+            
             let coordinates = (countryDetails.latlng[0], countryDetails.latlng[1])
-            let estimatedCountrySpan = countryDetails.area ?? 1000.0 .squareRoot() / 100 * 1.3
-
+            let area = countryDetails.area ?? 1000.0
+            let estimatedCountrySpan = area.squareRoot() / 100 * 1.3
             let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates.0, longitude: coordinates.1), span: MKCoordinateSpan(latitudeDelta: estimatedCountrySpan, longitudeDelta: estimatedCountrySpan))
             
-            DispatchQueue.main.async {
-                self.mapView.setRegion(region, animated: true)
-            }
+            self.mapView.setRegion(region, animated: true)
+
         }
         
     }
@@ -260,7 +256,6 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
                 
             case .area:
                 cell.setUpCell(("Area", "\(countryDetails.area ?? 0.0)"))
-                #warning("Fix formatting of double")
                 
             case .gini:
                 cell.setUpCell(("GINI", String(countryDetails.gini ?? 0.0)))

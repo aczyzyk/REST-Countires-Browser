@@ -72,6 +72,9 @@ extension MainScreenViewController: UITableViewDataSource, UITableViewDelegate {
         countriesTableView.delegate = self
         countriesTableView.dataSource = self
         
+        countriesTableView.estimatedRowHeight = countriesTableView.rowHeight
+        countriesTableView.rowHeight = UITableView.automaticDimension
+        
         setUpSearchController()
         setUpPullToRefresh()
     }

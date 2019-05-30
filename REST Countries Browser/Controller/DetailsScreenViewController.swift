@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import Alamofire
-import SwiftyJSON
 import MapKit
 import CoreLocation
 import SDWebImage
@@ -36,7 +34,6 @@ class DetailsScreenViewController: CustomViewController {
         Section(title: "Codes", items: [Item.alpha2Code, Item.alpha3Code, Item.callingCodes, Item.topLevelDomain, Item.numericCode,Item.cioc])]
     
     
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,35 +55,41 @@ class DetailsScreenViewController: CustomViewController {
     fileprivate func displayBasicCountryInfo(for country: CountryHeader) {
         nameLabel.text = country.name
         nativeNameLabel.text = country.nativeName
-        displayCountryFlag(flagURL: country.flagURL)
+        displayCountryFlag(flagURL: country.flag)
     }
     
     
     fileprivate func updateCountryDetails(for country: CountryHeader) {
         
-        let dataRequestURL = "https://restcountries.eu/rest/v2/alpha/\(country.alpha2Code)"
+        let url = URL(string: "https://restcountries.eu/rest/v2/alpha/\(country.alpha2Code)")
         
-        Alamofire.request(dataRequestURL, method: .get).responseJSON {
-            response in
+        URLSession.shared.dataTask(with: url!) { (data, response, error) in
             
-            if response.result.isSuccess {
+            if let data = data {
                 
-                if let value = response.result.value {
-                    
-                    self.countryDetails = CountryDetails(countryDetailsJSON: JSON(value))
-                    self.detailsTableView.reloadData()
-                    self.zoomInMap()
-                    self.displayCountryFlag(flagURL: self.countryDetails?.flag ?? self.selectedCountry?.flagURL ?? "")
+                do {
+                    self.countryDetails = try JSONDecoder().decode(CountryDetails.self, from: data)
+                    DispatchQueue.main.async {
+                        self.detailsTableView.reloadData()
+                        self.displayCountryFlag(flagURL: self.countryDetails?.flag ?? self.selectedCountry?.flag ?? "")
+                        self.zoomInMap()
+                    }
 
+                } catch {
+                    print("Failed to parse JSON")
                 }
                 
             } else {
-                self.countryDetails = nil
-                self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list below the map to retry.")
+                DispatchQueue.main.async {
+                    self.showAlert(title: "Failed to load data", message: "Check your network connection.\nPull down the list below the map to retry.")
+                }
             }
             
-            self.detailsTableView.refreshControl?.endRefreshing()
-        }
+            DispatchQueue.main.async {
+                self.detailsTableView.refreshControl?.endRefreshing()
+            }
+            
+            }.resume()
         
     }
     
@@ -114,7 +117,7 @@ extension DetailsScreenViewController {
         
         flagImageView.addConstraint(NSLayoutConstraint(
             item: flagImageView!,
-            attribute: .height,
+            attribute: .width,
             relatedBy: .equal,
             toItem: nil,
             attribute: .notAnAttribute,
@@ -148,13 +151,13 @@ extension DetailsScreenViewController {
         
         if let countryDetails = countryDetails {
             
-            let coordinates = countryDetails.latlng
-            let estimatedCountrySpan = Double(countryDetails.area).squareRoot() / 100 * 1.3
+            let coordinates = (countryDetails.latlng[0], countryDetails.latlng[1])
+            let area = countryDetails.area ?? 1000.0
+            let estimatedCountrySpan = area.squareRoot() / 100 * 1.3
             let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: coordinates.0, longitude: coordinates.1), span: MKCoordinateSpan(latitudeDelta: estimatedCountrySpan, longitudeDelta: estimatedCountrySpan))
             
-            DispatchQueue.main.async {
-                self.mapView.setRegion(region, animated: true)
-            }
+            self.mapView.setRegion(region, animated: true)
+
         }
         
     }
@@ -243,18 +246,19 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
                 
             case .population:
                 cell.setUpCell(("Population", countryDetails.population.asStringWithSeparator))
-                
+
             case .latlng:
-                cell.setUpCell(("Coordinates", "(\(countryDetails.latlng.0), \(countryDetails.latlng.1))"))
                 
+                cell.setUpCell(("Coordinates", "(\(countryDetails.latlng[0]), \(countryDetails.latlng[1] ))"))
+            
             case .demonym:
                 cell.setUpCell(("Demonym", countryDetails.demonym))
                 
             case .area:
-                cell.setUpCell(("Area", countryDetails.area.asStringWithSeparator))
+                cell.setUpCell(("Area", "\(countryDetails.area ?? 0.0)"))
                 
             case .gini:
-                cell.setUpCell(("GINI", String(countryDetails.gini)))
+                cell.setUpCell(("GINI", String(countryDetails.gini ?? 0.0)))
                 
             case .timezones:
                 cell.setUpCell(("Time Zones", countryDetails.timezones.joined(separator: "\n")))
@@ -266,17 +270,17 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
                 cell.setUpCell(("Native Name", countryDetails.nativeName))
                 
             case .numericCode:
-                cell.setUpCell(("Numeric Code", String(countryDetails.numericCode)))
+                cell.setUpCell(("Numeric Code", countryDetails.numericCode ?? ""))
                 
             case .currencies:
-                cell.setUpCell(("", countryDetails.currencies.map { "\($0.name)\nsymbol: \($0.symbol)\ncode: \($0.code)\n" } .joined(separator: "\n")))
+                cell.setUpCell(("", countryDetails.currencies.map { "\($0.name ?? "")\nsymbol: \($0.symbol ?? "")\ncode: \($0.code ?? "")\n" } .joined(separator: "\n")))
                 
             case .languages:
-                cell.setUpCell(("", countryDetails.languages.map { "\($0.name) (\($0.nativeName))\niso639_1: \($0.iso639_1)\niso639_2: \($0.iso639_2)\n" } .joined(separator: "\n") ))
+                cell.setUpCell(("", countryDetails.languages.map { "\($0.name ?? "") (\($0.nativeName ?? ""))\niso639_1: \($0.iso639_1 ?? "")\niso639_2: \($0.iso639_2 ?? "")\n" } .joined(separator: "\n") ))
                 
             case .translations:
-                cell.setUpCell(("Translations", countryDetails.translations.map { "\($0.key): \($0.value)" }.joined(separator: "\n")))
-                
+                cell.setUpCell(("Translations", countryDetails.translations.map { "\($0.key): \($0.value ?? "")" }.joined(separator: "\n")))
+
             case .flag:
                 cell.setUpCell(("Flag URL", countryDetails.flag))
                 
@@ -291,8 +295,9 @@ extension DetailsScreenViewController : UITableViewDelegate, UITableViewDataSour
                     value += "\n\n"
                 }
                 cell.setUpCell(("", value))
+
             case .cioc:
-                cell.setUpCell(("CIOC", countryDetails.cioc))
+                cell.setUpCell(("CIOC", countryDetails.cioc ?? ""))
             }
         }
 
